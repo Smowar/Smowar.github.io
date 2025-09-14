@@ -153,11 +153,11 @@
         }
         
         .join-text-lightblue {
-            color: #70c8ff; /* 比QQ蓝色(#12b7f5)更浅的蓝色 */
+            color: #70c8ff; 
         }
         
         .join-text-deeppurple {
-            color: #9d6ae5; /* 与IP地址相同的紫色 */
+            color: #9d6ae5; 
         }
         
         .footer {
@@ -246,15 +246,11 @@
     <div class="copied-message" id="copied-message">IP地址已复制到剪贴板！</div>
 
     <script>
-        // IP复制功能
         document.getElementById('ip-card').addEventListener('click', function() {
             const ip = 'shenyiworld.top';
-            
-            // 使用现代剪贴板API
             navigator.clipboard.writeText(ip).then(() => {
                 showCopiedMessage();
             }).catch(err => {
-                // 备用方法
                 const textArea = document.createElement('textarea');
                 textArea.value = ip;
                 document.body.appendChild(textArea);
