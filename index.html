@@ -1,0 +1,278 @@
+ <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沈忆世界ShenYiWorld - Minecraft 1.20.1 服务器</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #a6c1ee 0%, #c2a6ee 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #6a9ee5 0%, #9d6ae5 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .minecraft-icon {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            transform: rotate(15deg);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .server-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .server-info {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .info-card.clickable {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 0.9) 100%);
+        }
+        
+        .info-card h3 {
+            color: #6a9ee5;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-card h3 i {
+            margin-right: 10px;
+        }
+        
+        .info-card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #333;
+            word-break: break-all;
+        }
+        
+        .ip-address {
+            color: #9d6ae5 !important;
+        }
+        
+        .qq-group {
+            color: #12b7f5 !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .clickable:hover {
+            border-color: #9d6ae5;
+        }
+        
+        .clickable.qq:hover {
+            border-color: #12b7f5;
+        }
+        
+        .join-hint {
+            text-align: center;
+            margin: 25px 0;
+            font-size: 1.3rem;
+            color: #666;
+            font-weight: 500;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .join-text-lightblue {
+            color: #70c8ff; /* 比QQ蓝色(#12b7f5)更浅的蓝色 */
+        }
+        
+        .join-text-deeppurple {
+            color: #9d6ae5; /* 与IP地址相同的紫色 */
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            font-size: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .action-text {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 15px;
+            text-align: left;
+            padding-left: 5px;
+        }
+        
+        .copied-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .copied-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>沈忆世界ShenYiWorld</h1>
+            <p>Minecraft 1.20.1 服务器</p >
+            <div class="minecraft-icon">⛏️</div>
+        </div>
+        
+        <div class="content">
+            <div class="server-info">
+                <div class="info-card">
+                    <h3><i class="fas fa-code-branch"></i> 服务器版本</h3>
+                    <p>Minecraft 1.20.1</p >
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-signature"></i> 服务器名称</h3>
+                    <p>沈忆世界 ShenYiWorld</p >
+                </div>
+                
+                <div class="info-card clickable" id="ip-card">
+                    <h3><i class="fas fa-server"></i> 服务器IP</h3>
+                    <p class="ip-address">shenyiworld.top</p >
+                    <div class="action-text">
+                        点击此处复制IP地址
+                    </div>
+                </div>
+                
+                <div class="info-card clickable qq" onclick="window.open('http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=GQmmU69ZYW4DojctbFTEd8-HV_eu5FB1&authKey=2O0LrevYHgCXlj9sPpn%2FushKj07baj4UcLCW5mbR6T57T7%2BHuItMg7lrFve5NglT&noverify=0&group_code=1063167574', '_blank')">
+                    <h3><i class="fab fa-qq"></i> QQ群号</h3>
+                    <p class="qq-group">1063167574</p >
+                    <div class="action-text">
+                        点击此处加入QQ群
+                    </div>
+                </div>
+            </div>
+            
+            <div class="join-hint">
+                <span class="join-text-lightblue">---------------------------------欢迎加入</span><span class="join-text-deeppurple">沈忆世界--------------------------------</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+        </div>
+    </div>
+    
+    <div class="copied-message" id="copied-message">IP地址已复制到剪贴板！</div>
+
+    <script>
+        // IP复制功能
+        document.getElementById('ip-card').addEventListener('click', function() {
+            const ip = 'shenyiworld.top';
+            
+            // 使用现代剪贴板API
+            navigator.clipboard.writeText(ip).then(() => {
+                showCopiedMessage();
+            }).catch(err => {
+                // 备用方法
+                const textArea = document.createElement('textarea');
+                textArea.value = ip;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopiedMessage();
+            });
+        });
+        
+        function showCopiedMessage() {
+            const message = document.getElementById('copied-message');
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
